@@ -1,0 +1,2 @@
+APP_API_URL ='http://localhost:5001/salad-72030/us-central1/api'
+vapidKey=`BBf47KAL1ONKwQPVlxiNiubkv0a64UW0zAfsTTL7gvlrVQlrMpdiR3CaP1lBEISVqfzIlNDa40EpK730Kc7Q3AU`

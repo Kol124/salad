@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "noImplicitReturns": true,
+    "noUnusedLocals": false,
+    "outDir": "lib",
+    "sourceMap": true,
+    "strict": true,
+    "target": "es2017",
+    "noEmitOnError": true,
+    "skipLibCheck": true
+  },
+  "compileOnSave": true,
+  "include": [
+    "src"
+  ],
+  "exclude": [
+    "node_modules",
+    "./node_modules",
+    "./node_modules/*",
+    "./node_modules/@types/node/index.d.ts",
+    "node_modules/@firebase/firestore/dist/index.d.ts"
+  ]
+}
