@@ -22,10 +22,10 @@ export default function Login() {
               <form>
                 <div className="form-header">Sign In</div>
                 <div className="input-container">
-                  <label htmlFor="">Username</label>
+                  <label htmlFor="">Email</label>
                   <input
-                    type="text"
-                    className="username"
+                    type="email"
+                    className="email"
                     required
                     onChange={(e) => {
                       setEmail(e.target.value);
@@ -154,7 +154,7 @@ const StyledLogin = styled.div`
               transition: 0.5s;
               pointer-events: none;
             }
-            .username,
+            .email,
             .password {
               font-size: 1rem;
               background-color: rgb(240, 239, 255);

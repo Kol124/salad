@@ -5,11 +5,14 @@ import styled from "styled-components";
 
 function Main() {
   const { allReviews, getAllReviews } = useStore();
+
   useEffect(() => {
     getAllReviews();
+    console.log("Reviews: ", allReviews);
   }, []);
+
   return (
-    <StyledMain class="main-container">
+    <StyledMain className="main-container">
       {allReviews ? (
         allReviews.map((post) => {
           <Post details={post} />;
@@ -17,13 +20,6 @@ function Main() {
       ) : (
         <div>stuff</div>
       )}
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
-      <Post /* details={post} */ />;
     </StyledMain>
   );
 }

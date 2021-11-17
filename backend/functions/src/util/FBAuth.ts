@@ -30,8 +30,8 @@ const FBAuth = (
 
       await getDocs(q)
         .then((data) => {
-          //console.log("FBAuth, get single data", data);
-          //console.log("data.docs", data.docs);
+          console.log("FBAuth, get single data", data);
+          console.log("data.docs", data.docs);
           data.forEach((userDetails) => {
             req.user!.handle = userDetails.data().handle;
             console.log("getting handle", userDetails.data());

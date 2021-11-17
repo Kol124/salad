@@ -30,7 +30,7 @@ export default function Signup() {
           <div className="signup-container">
             <div className="signup-form">
               <form>
-                <div className="form-header">Sign In</div>
+                <div className="form-header">Sign Up</div>
                 <div className="input-container">
                   {" "}
                   <input

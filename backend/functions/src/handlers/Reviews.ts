@@ -75,8 +75,10 @@ const postReview = (req: userRequest, res: Response) => {
     position: req.body.position ? req.body.position : "",
     logo: req.body.logo ? req.body.logo : "",
   };
+
   console.log("[New review that is being created]", newReview);
   const reviewsRef = collection(db, "reviews");
+
   addDoc(reviewsRef, newReview)
     .then((doc) => {
       const resReview: DocumentData = newReview;
@@ -210,6 +212,7 @@ const getReview = async (req: userRequest, res: Response) => {
   console.log("[checking req.params.reviewId]", req.params.reviewId);
   let reviewData: DocumentData = {};
   let reviewRef = doc(db, "reviews", req.params.reviewId);
+
   getDoc(reviewRef)
     .then(async (doc) => {
       if (!doc.exists()) {

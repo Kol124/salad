@@ -28,7 +28,7 @@ import * as os from "os";
 import * as fs from "fs";
 
 // TODO: Replace the following with your app's Firebase project configuration
-//const app = initializeApp(config);
+// const app = initializeApp(config);
 
 import {
   validateLoginData,
@@ -36,11 +36,11 @@ import {
   reduceUserDetails,
 } from "../util/validators";
 import { userRequest } from "../util/types";
-//import { user } from 'firebase-functions/v1/auth';
+// import { user } from 'firebase-functions/v1/auth';
 
-//TODO: Handle error display with reusable modal
+// TODO: Handle error display with reusable modal
 
-//Sign user in
+// Sign user in
 const signUp = async (req: any, res: any) => {
   const newUser = {
     email: req!.body.email,
@@ -49,7 +49,7 @@ const signUp = async (req: any, res: any) => {
     handle: req!.body.handle,
   };
 
-  console.log("sign in contents", req.body);
+  console.log("sign up contents", req.body);
   const { valid, errors } = validateSignupData(newUser);
 
   if (!valid) return res.status(400).json(errors);
@@ -106,7 +106,6 @@ const signUp = async (req: any, res: any) => {
 
 // Log user in
 const logIn = (req: any, res: any) => {
-  //return res.json({token:'q3w4e56r7t8y9hjj8hgfdse45dr67ft8g9h0jjh7gf8d90s85utjgmyguifcod9rifgj'}); // DEBUGGING
   const user = {
     email: req.body.email,
     password: req.body.password,
@@ -227,6 +226,7 @@ const uploadUserImage = (req: userRequest, res: Response) => {
 
   busboy.end();
 };
+
 const uploadCoverImage = (req: userRequest, res: Response) => {
   const busboy = new BusBoy({ headers: req.headers });
 
@@ -317,7 +317,7 @@ const uploadCoverImage = (req: userRequest, res: Response) => {
   busboy.end();
 };
 
-//Add user details
+// Add user details
 const addUserDetails = (req: userRequest, res: Response) => {
   let userDetails = reduceUserDetails(req.body);
 
@@ -333,7 +333,7 @@ const addUserDetails = (req: userRequest, res: Response) => {
     });
 };
 
-//getUserDetails handler to get a user's details
+// getUserDetails handler to get a user's details
 interface UserData {
   reviews?: any[];
   credentials?: {};
@@ -341,6 +341,7 @@ interface UserData {
   notifications?: any[];
   body?: any;
 }
+
 const getUserDetails = async (req: userRequest, res: Response) => {
   let userData: UserData = {};
   let userRef = doc(db, "users", req.params.handle);
@@ -481,4 +482,5 @@ export {
   uploadCoverImage,
   addUserDetails,
   getUserDetails,
+  getAuthenticatedUser,
 };

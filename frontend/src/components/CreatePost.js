@@ -8,6 +8,7 @@ import Article from "../assets/Salad post/Article.svg";
 import Send from "../assets/Salad post/Send.svg";
 
 /* import {ReactComponent  as Send} from "../assets/Salad post/Send.svg"; */
+
 function CreatePost() {
   const { post, submitReview, togglePost } = useStore();
   const [title, setTitle] = useState();
@@ -15,6 +16,7 @@ function CreatePost() {
   const [status, setStatus] = useState();
   const [formData, SetFormData] = useState();
   const [company, setCompany] = useState("dummyCompany");
+
   const handleImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
@@ -26,9 +28,10 @@ function CreatePost() {
     const fileInput = document.getElementById("imageInput");
     fileInput.click();
   };
+
   return (
     <StyledCreatePost post={post}>
-      <div class="create-post-container">
+      <div className="create-post-container">
         <div className="post-grid-container">
           <img src="../assets/Rectangle 16.svg" alt="" className="user-img" />
           {/* TODO: implement the search company function */}
@@ -89,7 +92,7 @@ function CreatePost() {
           </div>
         </div>
       </div>
-      <div class="shadow"></div>
+      <div className="shadow"></div>
     </StyledCreatePost>
   );
 }
@@ -112,6 +115,7 @@ const StyledCreatePost = styled.div`
     ${({ post }) => {
       return post ? `display:block;` : `display:none;`;
     }}
+
     @media (max-width:905px) {
       width: 95%;
       padding: 20px;

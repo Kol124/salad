@@ -8,7 +8,10 @@ import {
   OnMessage,
   deleteSavedToken,
 } from "./firebasemessaging";
-const cors = require("cors");
+
+// Temporary image exports for post component
+import logo from "../assets/logo.png";
+import userImg from "../assets/Salad Images/Rectangle 16.png";
 
 // TODO: add backend base url
 axios.defaults.baseURL = process.env.APP_API_URL;
@@ -30,70 +33,104 @@ function useGlobalState() {
   const [user, setUser] = useState({});
   const history = useHistory();
 
-  // const HelloWorld = () => {
-  //   console.log("hello world!");
-  //   return "Hello World";
-  // };
+  /* Auth */
+  const Signup = (email, handle, password, confirmPassword) => {
+    let userData = { email, handle, password, confirmPassword };
+    console.log(userData);
 
-  /* UI Functions */
-  const [drawer, setDrawer] = useState(false);
-  const [post, setPost] = useState(false);
-  const [updateUser, setUpdateUser] = useState(false);
-  const toggleDrawer = () => {
-    setDrawer(drawer ? false : true);
+    axios
+      .post(
+        `http://localhost:5001/salad-72030/us-central1/api/signup`,
+        userData
+      )
+      .then((token) => {
+        console.log(token);
+        setToken(token);
+        console.log("setToken: ", token);
+        setAuthorization(token);
+        // getUser();
+        setErrors([]);
+        history.push("/");
+      });
   };
 
-  const togglePost = () => {
-    setPost(post ? false : true);
+  const Login = (email, password) => {
+    let userData = { email, password };
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    axios
+      .post("http://localhost:5001/salad-72030/us-central1/api/login", userData)
+      .then((res) => {
+        setToken(res.data.token);
+        // console.log("User Credentials: ", res);
+        if (token) {
+          console.log("Token: ", res);
+          console.log(user);
+          // if (user !== null) {
+          //   // The user object has basic properties such as display name, email, etc.
+          //   const displayName = user.displayName;
+          //   const email = user.email;
+          //   const photoURL = user.photoURL;
+          //   const emailVerified = user.emailVerified;
+          //   const uid = user.uid;
+          // }
+
+          setAuthenticated(true);
+          // getUser();
+          setErrors([]);
+          requestPermission();
+          OnMessage();
+          history.push("/");
+        }
+      });
   };
 
-  const toggleFullReview = (reviewId) => {
-    if (reviewId) getReview(reviewId);
-    setFullReview(fullReview ? false : true);
-  };
-
-  const toggleUpdateUser = () => {
-    setUpdateUser(updateUser ? false : true);
-  };
-  /* UI functions End */
-
-  /* User Functions */
   const LoginCheck = () => {
     setToken(localStorage.getItem("FBIdToken"));
 
     if (token) {
       const decodedToken = jwtDecode(token);
-      //console.log("this is decoded token,", decodedToken)
+      // console.log("this is decoded token,", decodedToken)
       if (decodedToken.exp * 1000 < Date.now()) {
         Logout();
         history.push("/login");
         deleteSavedToken();
       } else {
-        setAuthorization(token);
-        getUser();
+        axios
+          .get("http://localhost:5001/salad-72030/us-central1/api/login", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${token}`,
+            },
+          })
+          .then((res) => {
+            setUser(res.data);
+            console.log("getUserLoginCheck: ", res.data);
+            setAuthenticated(true);
+          });
+        console.log("LoginCheck: ", user);
         requestPermission();
         OnMessage();
       }
     }
   };
 
-  const Login = (username, password) => {
-    let userData = { username, password };
-    console.log(userData);
-    axios
-      .post("/login", userData, {
-        headers,
-      })
-      .then((res) => {
-        console.log(res.data.token);
-        setToken(res.data.token);
-        setAuthorization(token);
-        getUser();
-        setErrors([]);
-        requestPermission();
-        OnMessage();
-        history.push("/");
-      });
+  const setAuthorization = (token) => {
+    setAuthenticated(true);
+    const FBIdToken = `Bearer ${token}`;
+    console.log("[authorization token]", FBIdToken); // [DEBUGGING]
+    localStorage.setItem("FBIdToken", FBIdToken);
+    axios.defaults.headers.common["Authorization"] = FBIdToken;
+    requestPermission();
+  };
+
+  const getUser = () => {
+    setUser(null);
+    axios.get("/user").then((res) => {
+      setUser(res.data);
+      console.log("getUserLoginCheck: ", res.data);
+    });
   };
 
   const Logout = () => {
@@ -105,26 +142,10 @@ function useGlobalState() {
     history.push("/");
   };
 
-  const Signup = (email, username, password, confirmPassword) => {
-    let userData = { email, username, password, confirmPassword };
-    console.log(userData);
-
-    axios
-      .post(
-        `http://localhost:5001/salad-72030/us-central1/api/signup`,
-        userData,
-        { headers }
-      )
-      .then((token) => {
-        console.log(token);
-        setToken(token);
-        console.log("Set token !!!");
-        setAuthorization(token);
-        getUser();
-        setErrors([]);
-        history.push("/");
-      });
-  };
+  // LoginCheck();
+  useEffect(() => {
+    LoginCheck();
+  }, []);
 
   const googleSignup = () => {
     const auth = getAuth();
@@ -151,6 +172,30 @@ function useGlobalState() {
       });
   };
 
+  /* UI Functions */
+  const [drawer, setDrawer] = useState(false);
+  const [post, setPost] = useState(false);
+  const [updateUser, setUpdateUser] = useState(false);
+
+  const toggleDrawer = () => {
+    setDrawer(drawer ? false : true);
+  };
+
+  const togglePost = () => {
+    setPost(post ? false : true);
+  };
+
+  const toggleFullReview = (reviewId) => {
+    if (reviewId) getReview(reviewId);
+    setFullReview(fullReview ? false : true);
+  };
+
+  const toggleUpdateUser = () => {
+    setUpdateUser(updateUser ? false : true);
+  };
+  /* UI functions End */
+
+  /* User functions */
   const setNotification = () => {
     axios
       .get("/user")
@@ -164,7 +209,11 @@ function useGlobalState() {
 
   const uploadUserImage = (formData) => {
     axios
-      .post("/user/image", formData, { headers: formData.getHeaders() })
+      .post("/user/image", formData, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then(() => {
         getUser();
       })
@@ -175,7 +224,11 @@ function useGlobalState() {
 
   const uploadCoverImage = (formData) => {
     axios
-      .post("/user/coverImage", formData, { headers: formData.getHeaders() })
+      .post("/user/coverImage", formData, {
+        headers: {
+          Authorization: `${token}`,
+        },
+      })
       .then(() => {
         getUser();
       })
@@ -206,22 +259,6 @@ function useGlobalState() {
         setNotification((old) => old.map((not) => (not.read = true)));
       })
       .catch((err) => console.log);
-  };
-
-  const setAuthorization = (token) => {
-    setAuthenticated(true);
-    const FBIdToken = `Bearer ${token}`;
-    console.log("[authorization token]", FBIdToken); // [DEBUGGING]
-    localStorage.setItem("FBIdToken", FBIdToken);
-    axios.defaults.headers.common["Authorization"] = FBIdToken;
-    requestPermission();
-  };
-
-  const getUser = () => {
-    setUser(null);
-    axios.get("/user").then((res) => {
-      setUser(res.data);
-    });
   };
 
   /* Review Functions */
@@ -255,25 +292,50 @@ function useGlobalState() {
 
   // get All Reviews
   // TODO: find out where this function is actually called
+
   const getAllReviews = () => {
-    setAllReviews(null);
-    axios.get("/reviews").then((res) => {
-      if (res.data.length !== 0) {
-        setAllReviews(res.data);
-      } else {
-        //console.log("%c [dummy code executed ]", "color:yellow");
-        setAllReviews([
-          {
-            userHandle: "user",
-            body: "this is a dummy Review used for debug purposes, code should be removed in production",
-            createdAt: "2020-03-20T15:03:11.656Z",
-            likeCount: 5,
-            commentCount: 2,
-            reviewId: "2345678909876",
-          },
-        ]);
-      }
-    });
+    setAllReviews([
+      {
+        reviewId: "2345678909876",
+        body: "this is a fucking dummy Review used for debug purposes, code should be removed in production",
+        userHandle: "Klaus Mikaelson",
+        createdAt: "2020-03-20T15:03:11.656Z",
+        commentCount: 2,
+        likeCount: 5,
+        userImage: userImg,
+        title: "This is a fuckin Post",
+        company: "PayStack",
+        rating: "5 Stars",
+        role: "Admin",
+        position: "Dunno",
+        logo: logo,
+      },
+    ]);
+    // setAllReviews(null);
+    // axios.get("/reviews").then((res) => {
+    //   if (res.data.length !== 0) {
+    //     setAllReviews(res.data);
+    //   } else {
+    //     // console.log("%c [dummy code executed ]", "color:yellow");
+    //     setAllReviews([
+    //       {
+    //         reviewId: "2345678909876",
+    //         body: "this is a fucking dummy Review used for debug purposes, code should be removed in production",
+    //         userHandle: "Klaus Mikaelson",
+    //         createdAt: "2020-03-20T15:03:11.656Z",
+    //         commentCount: 2,
+    //         likeCount: 5,
+    //         userImage: userImg,
+    //         title: "This is a fuckin Post",
+    //         company: "PayStack",
+    //         rating: "5 Stars",
+    //         role: "Admin",
+    //         position: "Dunno",
+    //         logo: logo,
+    //       },
+    //     ]);
+    //   }
+    // });
   };
 
   // get Single Review
@@ -358,11 +420,6 @@ function useGlobalState() {
         setErrors(null);
       });
   };
-
-  // LoginCheck();
-  useEffect(() => {
-    LoginCheck();
-  }, []);
 
   return {
     user,

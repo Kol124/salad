@@ -11,9 +11,11 @@ import Navbar from "../components/Navbar";
 import SidebarLeft from "../components/SidebarLeft";
 import SidebarRight from "../components/SidebarRight";
 import CreatePost from "../components/CreatePost";
+import UpdateUser from "../components/UpdateUser";
 
 function MainApp() {
   const match = useRouteMatch();
+
   return (
     <>
       <Navbar />
@@ -44,7 +46,8 @@ function MainApp() {
           </Switch>
         </main>
         <SidebarRight />
-        <CreatePost/>
+        <CreatePost />
+        <UpdateUser />
       </div>
     </>
   );

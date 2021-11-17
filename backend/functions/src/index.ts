@@ -32,11 +32,11 @@ import {
 
 const app = express();
 
-app.use(cors({ origin: true }));
+app.use(cors({ origin: "http://localhost:3000" }));
 
-//Users
-app.post("/signup", signUp);
+// Users
 app.post("/login", logIn);
+app.post("/signup", signUp);
 app.post("/user/image", FBAuth, uploadUserImage);
 app.post("/user/coverImage", FBAuth, uploadCoverImage);
 // reviews routes

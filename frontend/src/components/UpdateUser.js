@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import useStore from "../store/useStore";
+
 function UpdateUser() {
   const { editUserDetails, updateUser, toggleUpdateUser } = useStore();
 
@@ -16,6 +17,7 @@ function UpdateUser() {
     formData.append("image", image, image.name);
     setUserImage(formData);
   };
+
   const handleCoverImageChange = (event) => {
     const image = event.target.files[0];
     const formData = new FormData();
@@ -27,6 +29,7 @@ function UpdateUser() {
     const fileInput = document.getElementById(imageId);
     fileInput.click();
   };
+
   return (
     <StyledUpdateUser className="update-user-container" toggle={updateUser}>
       <div className="close" onClick={toggleUpdateUser}></div>
@@ -69,6 +72,9 @@ function UpdateUser() {
           Update Cover Image
         </button>
       </div>
+      <input type="file" id="userImage" onChange={handleUserImageChange} />
+      <input type="file" id="coverImage" onChange={handleCoverImageChange} />
+
       <button
         className="submit"
         onClick={() => {
@@ -77,9 +83,6 @@ function UpdateUser() {
       >
         Update Details
       </button>
-      <input type="file" id="userImage" onChange={handleUserImageChange} />
-      <input type="file" id="coverImage" onChange={handleCoverImageChange} />
-      <div class="shadow"></div>
     </StyledUpdateUser>
   );
 }
@@ -88,9 +91,10 @@ export default UpdateUser;
 
 const StyledUpdateUser = styled.div`
   width: 90%;
-  border-radius: 20px;
   padding: 10px 20px;
-  background-color: ${({ theme }) => theme.cardBackground};
+  border-radius: 20px;
+  /* background-color: ${({ theme }) => theme.cardBackground}; */
+  background-color: #fff;
   margin-bottom: 20px;
   position: fixed;
   z-index: 4;
@@ -125,10 +129,7 @@ const StyledUpdateUser = styled.div`
       padding: 20px;
     }
   }
-  #userImage,
-  #coverImage {
-    visibility: hidden;
-  }
+
   .submit {
     width: 100%;
     //border: none;
@@ -141,7 +142,7 @@ const StyledUpdateUser = styled.div`
       !toggleUpdateUser ? `display:block;` : `display:none;`}
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.8);
     pointer-events: none;
     position: fixed;
     z-index: 4;

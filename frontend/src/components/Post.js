@@ -6,38 +6,41 @@ import vector9 from "../assets/Vector-9.svg";
 import vector10 from "../assets/Vector-10.svg";
 import LikeButton from "./LikeButton";
 import useStore from "../store/useStore";
+import postImg from "../assets/Salad Images/Rectangle-post.png";
+
 function Post({ details }) {
   const { toggleFullReview } = useStore();
-  //TODO: update post review and get review to contain all these parameters
+  // TODO: update post review and get review to contain all these parameters
   const {
-    logo,
-    rating,
-    imageUrl,
-    title,
+    reviewId,
     body,
-    readingTime,
-    userImage,
     userHandle,
+    createdAt,
+    commentCount,
+    likeCount,
+    userImage,
+    title,
+    company,
+    rating,
     role,
     position,
-    reviewId,
-    likeCount,
-    commentCount,
+    logo: logo,
   } = details;
+
   return (
     <StyledPost className="post-container">
       <div className="post-header">
-        <img src={logo} className="company-logo" />
+        {logo ? <img src={logo} className="company-logo" /> : null}
         <div className="stars">{rating}</div>
       </div>
       <div className="post-body">
-        {imageUrl ? <img src={imageUrl} alt="" className="post-img" /> : null}
+        <img src={postImg} alt="" className="post-img" />
         <div className="post-content">
           <div className="title">{title}</div>
           <div className="abstract">{body}</div>
           <div className="options-container">
             <div className="options">continue reading</div>
-            <div className="options">{readingTime}</div>
+            <div className="options">2 minutes</div>
           </div>
           <div className="profile">
             <img

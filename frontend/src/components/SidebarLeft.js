@@ -1,6 +1,6 @@
 import React from "react";
-import useStore from "../store/useStore";
 import styled from "styled-components";
+import useStore from "../store/useStore";
 
 import defaultUserImg from "../assets/Salad Images/Rectangle 16.png";
 import defaultUserBg from "../assets/image-top.png";
@@ -10,29 +10,28 @@ import graphs from "../assets/graphs.svg";
 import addpeople from "../assets/addpeople.svg";
 import bookmark from "../assets/bookmark.svg";
 import settings from "../assets/settings.svg";
+
 function SidebarLeft() {
-  const { userDetails, drawer, togglePost } = useStore();
+  const { user, drawer, togglePost } = useStore();
+  console.log(user);
+
   return (
     <StyledSidebarLeft className="sidebar-container" toggle={drawer}>
       <div className="fullscreen-post">
         <div className="card-container">
           <img
-            src={userDetails ? userDetails.bg : defaultUserBg}
+            src={user ? user.bg : defaultUserBg}
             alt=""
             className="card-img-top"
           />
           <div className="user-details">
             <img
-              src={userDetails ? userDetails.img : defaultUserImg}
+              src={user ? user.imageUrl : defaultUserImg}
               alt=""
               className="user-img"
             />
-            <div className="user-name">
-              {userDetails ? userDetails.name : "Username"}
-            </div>
-            <div className="user-role">
-              {userDetails ? userDetails.role : "User role"}
-            </div>
+            <div className="user-name">{user ? user.handle : "Username"}</div>
+            <div className="user-role">{user ? user.role : "User role"}</div>
           </div>
           <div className="post-container">
             <div className="add-account">add another account</div>

@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import useStore from "../store/useStore";
+
 function FullReview() {
   const { singleReview, toggleFullReview, submitComment, fullReview } =
     useStore();
   const [commentText, setCommentText] = useState("");
+
   return (
     <StyledFullReview className="single-post-container" toggle={fullReview}>
       <div className="post-header">
@@ -71,7 +73,7 @@ function FullReview() {
           }}
         ></button>
       </div>
-      <div class="shadow"></div>
+      <div className="shadow"></div>
     </StyledFullReview>
   );
 }
